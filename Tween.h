@@ -14,6 +14,7 @@
 #include <vector>
 #include <iostream>
 #include <functional>
+#include "EnumParser.h"
 
 struct EaseLinear{int operator()(float t, int initialX, float durationSecs) const {return static_cast<int>(initialX * (t + durationSecs));}};
 
@@ -22,21 +23,29 @@ struct Print{void operator()(int value) {std::cout << value << std::endl;}};
 
 typedef std::shared_ptr<class Tween> TweenRef;
 
-// Template 
+/*
+ * Template for Functions
+ */
 template<typename T>
 class TweenEase;
 typedef std::function<int (float, int, int, float)> EaseFunction;
 typedef std::function<int (float, int, int, float)> ArcFunction;
 
+/*
+ * Easing functions definition
+ */
 inline int easeLinear(float t, int initialX, int finalX, float durationSecs){return static_cast<int>((finalX-initialX) * (t + durationSecs)); };
 inline int easeInQuad(float t, int initialX, int finalX, float durationSecs){return static_cast<int>((finalX-initialX) * (t*t + durationSecs)); };
+inline int easeOutQuad(float t, int initialX, int finalX, float durationSecs){return static_cast<int>((finalX-initialX) * (t*t + durationSecs)); };
 inline int easeInOutQuad(float t, int initialX, int finalX, float durationSecs){ t*=2; float temp = t-1; float lastVal = t<1?(0.5f*t*t):(-0.5f*(temp*(temp-2)-1));    return static_cast<int>((finalX-initialX) * (lastVal + durationSecs)); };
+
+
 
 
 class Tween : public std::enable_shared_from_this<Tween>
 {
 public:
-    enum EaseType{Linear, InQuad, OutQuad, InOutQuad}; // Type of easing functions
+    enum EaseType{Linear, InQuad, OutQuad, InOutQuad, ArcX, ArcY}; // Type of easing functions
     //Constructors
     Tween(int initialX, int finalX, float durationSecs, EaseFunction easeFunction, std::vector<float> inputTimeSecs):
     mInitialX(initialX),

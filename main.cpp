@@ -10,6 +10,7 @@
 #include <vector>
 #include <string>
 #include "Tween.h"
+#include "Parser.h"
 
 using namespace std;
 
@@ -23,6 +24,10 @@ int main(int argc, const char * argv[]) {
     
   // string lineBuf;
    // getline(cin, lineBuf);
+    
+    Parser mParser("OutQuad,x_t0=100, x_tmax=200,duration=1");
+    mParser.parseString();
+    //cout << "Parser: " << mParser.getEaseType() << endl;
     
     cout << "Linear:" << endl;
     Tween tween(100, 200, 1, easeLinear, values);
